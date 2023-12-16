@@ -23,9 +23,10 @@ First install the dependencies:
 - make.
 - [scdoc](https://git.sr.ht/~sircmpwn/scdoc).
 
-Then compile and install:
+Switch to the latest stable tag, `v0.2.0`, then compile and install:
 
 ```bash
+git checkout v0.2.0
 make
 sudo make install
 ```
