@@ -29,12 +29,16 @@ Now, please analyze the provided image and generate an SEO-optimized alt tag in 
 `
 
 // NewRequest creates a chat completion request with streaming support for the OpenAI API.
-func NewRequest(language, base64Image string, keywords []string) openai.ChatCompletionRequest {
+func NewRequest(language, context, base64Image string, keywords []string) openai.ChatCompletionRequest {
 	systemPrompt := _systemPrompt +
 		"\n\n- User's preferred language: " + language
 
+	if context != "" {
+		systemPrompt += "\n\nContext around the image: " + context
+	}
+
 	if len(keywords) > 0 {
-		systemPrompt += "\n- Keywords: " + xstrings.JoinWithSeparator(", ", keywords...)
+		systemPrompt += "\n\n- Keywords: " + xstrings.JoinWithSeparator(", ", keywords...)
 	}
 
 	return openai.ChatCompletionRequest{

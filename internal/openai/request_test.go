@@ -13,6 +13,7 @@ func TestNewRequest(t *testing.T) {
 	tests := []struct {
 		name          string
 		language      string
+		context       string
 		base64Image   string
 		keywords      []string
 		expectedModel string
@@ -31,6 +32,14 @@ func TestNewRequest(t *testing.T) {
 			keywords:      []string{},
 			expectedModel: "gpt-4-vision-preview",
 		},
+		{
+			name:          "French with context",
+			language:      "French",
+			context:       "context text",
+			base64Image:   "base64image3",
+			keywords:      []string{},
+			expectedModel: "gpt-4-vision-preview",
+		},
 	}
 
 	for _, tt := range tests {
@@ -39,7 +48,7 @@ func TestNewRequest(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			request := openai.NewRequest(tt.language, tt.base64Image, tt.keywords)
+			request := openai.NewRequest(tt.language, tt.context, tt.base64Image, tt.keywords)
 
 			if request.MaxTokens <= 0 {
 				t.Errorf("MaxTokens is non-positive, got %v", request.MaxTokens)

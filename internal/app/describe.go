@@ -28,10 +28,11 @@ func DescribeAction(ctx *cli.Context) error {
 	}
 
 	var (
-		key      = ctx.String("key")
-		language = ctx.String("language")
-		keywords = ctx.StringSlice("keyword")
-		image    = ctx.Args().Get(0)
+		key          = ctx.String("key")
+		language     = ctx.String("language")
+		keywords     = ctx.StringSlice("keyword")
+		imageContext = ctx.String("context")
+		image        = ctx.Args().Get(0)
 	)
 
 	if key == "" {
@@ -46,7 +47,7 @@ func DescribeAction(ctx *cli.Context) error {
 	var (
 		base64Image = xbase64.EncodeImageToDataURL(data)
 		client      = openai.NewClient(key)
-		req         = openai.NewRequest(language, base64Image, keywords)
+		req         = openai.NewRequest(language, imageContext, base64Image, keywords)
 	)
 
 	resp, err := client.Do(context.Background(), req)

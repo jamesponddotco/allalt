@@ -35,6 +35,14 @@ func Run(args []string) int {
 				"ALLALT_LANGUAGE",
 			},
 		},
+		&cli.StringFlag{
+			Name:    "context",
+			Aliases: []string{"c"},
+			Usage:   "the context around the image to use when describing images",
+			EnvVars: []string{
+				"ALLALT_CONTEXT",
+			},
+		},
 		&cli.StringSliceFlag{
 			Name:    "keyword",
 			Aliases: []string{"K"},

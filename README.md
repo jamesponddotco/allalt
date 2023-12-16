@@ -46,6 +46,7 @@ VERSION:
 GLOBAL OPTIONS:
    --key value, -k value                                    the OpenAI API key to use [$ALLALT_KEY]
    --language value, -l value                               the language to use when describing images (default: "en_US") [$ALLALT_LANGUAGE]
+   --context value, -c value                                the context around the image to use when describing images [$ALLALT_CONTEXT]
    --keyword value, -K value [ --keyword value, -K value ]  potential keywords relevant to the image
    --help, -h                                               show help
    --version, -v                                            print the version
