@@ -4,7 +4,7 @@ go 1.21.4
 
 require (
 	git.sr.ht/~jamesponddotco/xstd-go v0.5.0
-	github.com/sashabaranov/go-openai v1.17.9
+	github.com/sashabaranov/go-openai v1.27.1
 	github.com/urfave/cli/v2 v2.26.0
 )
 
