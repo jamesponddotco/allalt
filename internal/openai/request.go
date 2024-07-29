@@ -43,7 +43,7 @@ func NewRequest(language, context, base64Image string, keywords []string) openai
 
 	return openai.ChatCompletionRequest{
 		MaxTokens: _defaultMaxTokens,
-		Model:     openai.GPT4VisionPreview,
+		Model:     openai.GPT4o,
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role: openai.ChatMessageRoleUser,

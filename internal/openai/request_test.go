@@ -23,14 +23,14 @@ func TestNewRequest(t *testing.T) {
 			language:      "English",
 			base64Image:   "base64image1",
 			keywords:      []string{"keyword1", "keyword2"},
-			expectedModel: "gpt-4-vision-preview",
+			expectedModel: "gpt-4o",
 		},
 		{
 			name:          "Spanish without keywords",
 			language:      "Spanish",
 			base64Image:   "base64image2",
 			keywords:      []string{},
-			expectedModel: "gpt-4-vision-preview",
+			expectedModel: "gpt-4o",
 		},
 		{
 			name:          "French with context",
@@ -38,7 +38,7 @@ func TestNewRequest(t *testing.T) {
 			context:       "context text",
 			base64Image:   "base64image3",
 			keywords:      []string{},
-			expectedModel: "gpt-4-vision-preview",
+			expectedModel: "gpt-4o",
 		},
 	}
 
