@@ -11,9 +11,6 @@ const (
 
 // Provider represents a provider like OpenAI, Anthropic, Ollama, etc.
 type Provider interface {
-	// Name returns the name of the provider.
-	Name() string
-
 	// Do performs a single API request to the provider's API, returning a
 	// response for the provided Request.
 	//
