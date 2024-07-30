@@ -62,6 +62,14 @@ func Run(args []string) int {
 				"ALLALT_CONTEXT",
 			},
 		},
+		&cli.BoolFlag{
+			Name:    "filename",
+			Aliases: []string{"f"},
+			Usage:   "whether to generate a filename for the image",
+			EnvVars: []string{
+				"ALLALT_FILENAME",
+			},
+		},
 	}
 
 	app.Action = DescribeAction
