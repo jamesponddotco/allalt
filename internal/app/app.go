@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"git.sr.ht/~jamesponddotco/allalt/internal/ai"
 	"git.sr.ht/~jamesponddotco/allalt/internal/meta"
 	"github.com/urfave/cli/v2"
 )
@@ -24,6 +25,15 @@ func Run(args []string) int {
 			Usage:   "the OpenAI API key to use",
 			EnvVars: []string{
 				"ALLALT_KEY",
+			},
+		},
+		&cli.StringFlag{
+			Name:    "provider",
+			Aliases: []string{"p"},
+			Usage:   "the AI provider to use",
+			Value:   ai.ProviderAnthropic,
+			EnvVars: []string{
+				"ALLALT_PROVIDER",
 			},
 		},
 		&cli.StringFlag{
