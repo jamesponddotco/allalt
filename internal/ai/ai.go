@@ -21,9 +21,6 @@ type Provider interface {
 
 // Request represents an HTTP request to an AI provider's API.
 type Request struct {
-	// Context is a string that provides additional context for the request.
-	Context string
-
 	// Model is the full name of the LLM model to use for the request, e.g.
 	// "gpt-4o-mini" or "claude-3-5-sonnet-20240620".
 	Model string
@@ -46,11 +43,10 @@ type Request struct {
 }
 
 // NewRequest returns a new Request instance.
-func NewRequest(image []byte, model, context, userPrompt string, temperature float32) *Request {
+func NewRequest(image []byte, model, userPrompt string, temperature float32) *Request {
 	return &Request{
 		Image:       image,
 		Model:       model,
-		Context:     context,
 		UserPrompt:  userPrompt,
 		Temperature: temperature,
 	}
