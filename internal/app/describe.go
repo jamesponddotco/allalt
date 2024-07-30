@@ -1,14 +1,13 @@
 package app
 
 import (
-	"context"
-	"errors"
 	"fmt"
-	"io"
 	"os"
+	"strings"
 
-	"git.sr.ht/~jamesponddotco/allalt/internal/openai"
-	"git.sr.ht/~jamesponddotco/allalt/internal/xbase64"
+	"git.sr.ht/~jamesponddotco/allalt/internal/ai"
+	"git.sr.ht/~jamesponddotco/allalt/internal/ai/anthropic"
+	"git.sr.ht/~jamesponddotco/allalt/internal/ai/openai"
 	"git.sr.ht/~jamesponddotco/xstd-go/xerrors"
 	"github.com/urfave/cli/v2"
 )
@@ -19,6 +18,9 @@ const (
 
 	// ErrEmptyKey is returned when no API key for OpenAI is provided by the user.
 	ErrEmptyKey xerrors.Error = "missing OpenAI API key"
+
+	// ErrInvalidProvider is returned when an invalid provider is provided by the user.
+	ErrInvalidProvider xerrors.Error = "invalid AI provider; please refer to the documentation for a list of valid providers"
 )
 
 // DescribeAction is the main action for the application.
@@ -28,15 +30,35 @@ func DescribeAction(ctx *cli.Context) error {
 	}
 
 	var (
-		key          = ctx.String("key")
-		language     = ctx.String("language")
-		keywords     = ctx.StringSlice("keyword")
-		imageContext = ctx.String("context")
-		image        = ctx.Args().Get(0)
+		key         = ctx.String("key")
+		provider    = ctx.String("provider")
+		model       = ctx.String("model")
+		temperature = ctx.Float64("temperature")
+		language    = ctx.String("language")
+		context     = ctx.String("context")
+		filename    = ctx.Bool("filename")
+		image       = ctx.Args().Get(0)
+		client      ai.Provider
 	)
 
 	if key == "" {
 		return ErrEmptyKey
+	}
+
+	provider = strings.ToLower(provider)
+	provider = strings.TrimSpace(provider)
+
+	switch provider {
+	case ai.ProviderOpenAI:
+		client = openai.NewClient(key)
+
+		if model == anthropic.DefaultModel {
+			model = openai.DefaultModel
+		}
+	case ai.ProviderAnthropic:
+		client = anthropic.NewClient(key)
+	default:
+		return ErrInvalidProvider
 	}
 
 	data, err := os.ReadFile(image)
@@ -44,30 +66,25 @@ func DescribeAction(ctx *cli.Context) error {
 		return fmt.Errorf("failed to read image: %w", err)
 	}
 
-	var (
-		base64Image = xbase64.EncodeImageToDataURL(data)
-		client      = openai.NewClient(key)
-		req         = openai.NewRequest(language, imageContext, base64Image, keywords)
-	)
+	userPrompt := "Please generate a SEO-optimized alt text for the attached image."
 
-	resp, err := client.Do(context.Background(), req)
-	if err != nil {
-		return fmt.Errorf("failed to get response: %w", err)
+	if language != "" {
+		userPrompt += " User's preferred language: " + language
 	}
 
-	for {
-		text, err := resp.Recv()
-		if errors.Is(err, io.EOF) {
-			fmt.Fprintf(ctx.App.Writer, "\n")
+	if context != "" {
+		userPrompt += "\n\n Here is some context for the image: " + context
+	}
 
-			break
-		}
+	if filename {
+		userPrompt += " Include a SEO-optimized filename as well."
+	}
 
-		if err != nil {
-			return fmt.Errorf("failed to get response: %w", err)
-		}
+	req := ai.NewRequest(data, model, userPrompt, float32(temperature))
 
-		fmt.Fprintf(ctx.App.Writer, "%s", text.Choices[0].Delta.Content)
+	err = client.Do(ctx, req)
+	if err != nil {
+		return fmt.Errorf("failed to get response: %w", err)
 	}
 
 	return nil
