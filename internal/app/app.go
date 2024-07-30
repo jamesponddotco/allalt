@@ -37,6 +37,15 @@ func Run(args []string) int {
 			},
 		},
 		&cli.StringFlag{
+			Name:    "model",
+			Aliases: []string{"m"},
+			Usage:   "the model to use when describing images",
+			Value:   "claude-3-5-sonnet-20240620",
+			EnvVars: []string{
+				"ALLALT_MODEL",
+			},
+		},
+		&cli.StringFlag{
 			Name:    "language",
 			Aliases: []string{"l"},
 			Usage:   "the language to use when describing images",
