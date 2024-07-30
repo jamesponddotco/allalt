@@ -3,7 +3,6 @@ package xbase64
 
 import (
 	"encoding/base64"
-	"fmt"
 )
 
 // EncodeImageToDataURL encodes the given image data as a base64 data URL. It'll
@@ -11,5 +10,5 @@ import (
 func EncodeImageToDataURL(data []byte) string {
 	base := base64.StdEncoding.EncodeToString(data)
 
-	return fmt.Sprintf("data:image/jpeg;base64,%s", base)
+	return "data:image/jpeg;base64," + base
 }
