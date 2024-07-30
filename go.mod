@@ -1,6 +1,6 @@
 module git.sr.ht/~jamesponddotco/allalt
 
-go 1.21.4
+go 1.22
 
 require (
 	git.sr.ht/~jamesponddotco/xstd-go v0.5.0
