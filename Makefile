@@ -65,6 +65,12 @@ test/coverage: # Generates a coverage profile and open it in a browser.
 	$(GO) test -coverprofile cover.out ./...
 	$(GO) tool cover -html=cover.out
 
+licenses: # Runs go-licenses to check the licenses of the dependencies and generate a CSV file.
+	$(GO) run github.com/google/go-licenses@latest report \
+		--template 'license-3rdparty.tpl' \
+		--ignore 'git.sr.ht/~jamesponddotco/allalt' \
+		'git.sr.ht/~jamesponddotco/allalt' > LICENSE-3rdparty.csv
+
 clean: # Cleans cache files from tests and deletes any build output.
 	$(RM) -f cover.out allalt allalt.1
 
