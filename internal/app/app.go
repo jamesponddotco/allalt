@@ -62,11 +62,6 @@ func Run(args []string) int {
 				"ALLALT_CONTEXT",
 			},
 		},
-		&cli.StringSliceFlag{
-			Name:    "keyword",
-			Aliases: []string{"K"},
-			Usage:   "potential keywords relevant to the image",
-		},
 	}
 
 	app.Action = DescribeAction
